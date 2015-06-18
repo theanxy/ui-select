@@ -1597,46 +1597,79 @@ describe('ui-select tests', function() {
       );
     }
 
-    describe('selectize theme', function() {
+    describe('selectize theme', function () {
 
-      it('should show search input when true', function() {
+      it('should show search input when true', function () {
         setupSelectComponent(true, 'selectize');
         expect($(el).find('.ui-select-search')).not.toHaveClass('ng-hide');
       });
 
-      it('should hide search input when false', function() {
+      it('should hide search input when false', function () {
         setupSelectComponent(false, 'selectize');
         expect($(el).find('.ui-select-search')).toHaveClass('ng-hide');
       });
 
     });
 
-    describe('select2 theme', function() {
+    describe('select2 theme', function () {
 
-      it('should show search input when true', function() {
+      it('should show search input when true', function () {
         setupSelectComponent('true', 'select2');
         expect($(el).find('.select2-search')).not.toHaveClass('ng-hide');
       });
 
-      it('should hide search input when false', function() {
+      it('should hide search input when false', function () {
         setupSelectComponent('false', 'select2');
         expect($(el).find('.select2-search')).toHaveClass('ng-hide');
       });
 
     });
 
-    describe('bootstrap theme', function() {
+    describe('bootstrap theme', function () {
 
-      it('should show search input when true', function() {
+      it('should show search input when true', function () {
         setupSelectComponent('true', 'bootstrap');
         clickMatch(el);
         expect($(el).find('.ui-select-search')).not.toHaveClass('ng-hide');
       });
 
-      it('should hide search input when false', function() {
+      it('should hide search input when false', function () {
         setupSelectComponent('false', 'bootstrap');
         clickMatch(el);
         expect($(el).find('.ui-select-search')).toHaveClass('ng-hide');
+      });
+
+      it('should not show "no results" message when it is not defined', function() {
+        setupSelectComponent('true', 'bootstrap');
+
+        el.scope().$select.search = 'idontexist';
+        scope.$digest();
+        expect($(el).find('.ui-select-choices-row:contains("No results :-(")').length).toEqual(0);
+      });
+
+      it('should show "no results" message when it is defined', function() {
+        var choices;
+
+        el = compileTemplate(
+          '<ui-select ng-model="selection.selected" theme="bootstrap" search-enabled="true" no-results="No results :-("> \
+            <ui-select-match placeholder="Pick one...">{{$select.selected.name}}</ui-select-match> \
+            <ui-select-choices repeat="person in people | filter: $select.search"> \
+              <div ng-bind-html="person.name | highlight: $select.search"></div> \
+              <div ng-bind-html="person.email | highlight: $select.search"></div> \
+            </ui-select-choices> \
+          </ui-select>'
+        );
+
+        el.scope().$select.search = 'idontexist';
+        scope.$digest();
+        choices = $(el).find('.ui-select-choices-row')
+
+        expect(choices.length).toEqual(1);
+        expect(choices.text()).toEqual('No results :-(');
+
+        el.scope().$select.search = 'ad';
+        scope.$digest();
+        expect($(el).find('.ui-select-choices-row:contains("No results :-(")').length).toEqual(0);
       });
     });
   });

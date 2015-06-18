@@ -216,7 +216,8 @@ body > .ui-select-bootstrap.open {
   border-right: 1px solid #428bca;
 }
 
-.ui-select-bootstrap .ui-select-choices-row>a {
+.ui-select-bootstrap .ui-select-choices-row > a,
+.ui-select-bootstrap .ui-select-choices-row > span {
     display: block;
     padding: 3px 20px;
     clear: both;
