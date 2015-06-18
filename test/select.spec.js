@@ -1335,6 +1335,39 @@ describe('ui-select tests', function() {
         expect($(el).find('.ui-select-search')).toHaveClass('ng-hide');
       });
 
+      it('should not show "no results" message when it is not defined', function() {
+        setupSelectComponent('true', 'bootstrap');
+
+        el.scope().$select.search = 'idontexist';
+        scope.$digest();
+        expect($(el).find('.ui-select-choices-row:contains("No results :-(")').length).toEqual(0);
+      });
+
+      it('should show "no results" message when it is defined', function() {
+        var choices;
+
+        el = compileTemplate(
+          '<ui-select ng-model="selection.selected" theme="bootstrap" search-enabled="true" no-results="No results :-("> \
+            <ui-select-match placeholder="Pick one...">{{$select.selected.name}}</ui-select-match> \
+            <ui-select-choices repeat="person in people | filter: $select.search"> \
+              <div ng-bind-html="person.name | highlight: $select.search"></div> \
+              <div ng-bind-html="person.email | highlight: $select.search"></div> \
+            </ui-select-choices> \
+          </ui-select>'
+        );
+
+        el.scope().$select.search = 'idontexist';
+        scope.$digest();
+        choices = $(el).find('.ui-select-choices-row')
+
+        expect(choices.length).toEqual(1);
+        expect(choices.text()).toEqual('No results :-(');
+
+        el.scope().$select.search = 'ad';
+        scope.$digest();
+        expect($(el).find('.ui-select-choices-row:contains("No results :-(")').length).toEqual(0);
+      });
+
     });
 
   });
