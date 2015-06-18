@@ -443,7 +443,7 @@ describe('ui-select tests', function() {
   });
 
   it('should correctly render initial state with track by $index', function () {
-    
+
     var el = compileTemplate(
       '<ui-select ng-model="selection.selected"> \
         <ui-select-match placeholder="Pick one...">{{$select.selected.name}}</ui-select-match> \
@@ -2310,7 +2310,7 @@ describe('ui-select tests', function() {
 
       expect(el.scope().$select.multiple).toBe(true);
     });
-    
+
     it('should preserve the model if tagging is enabled on select multiple', function() {
       scope.selection.selectedMultiple = ["I am not on the list of choices"];
 
@@ -2485,6 +2485,25 @@ describe('ui-select tests', function() {
       var searchEl = $(el).find('input.ui-select-search');
       expect(searchEl.length).toEqual(1);
       expect(searchEl[0].id).toEqual('inid');
+    });
+
+    it('should be marked invalid when required and empty', function() {
+      scope.selection.selectedMultiple = [];
+      var el = createUiSelectMultiple({required: true});
+
+      expect(el.scope().$select.ngModel.$invalid).toEqual(true);
+      expect(el.scope().$select.ngModel.$error.required).toEqual(true);
+
+      clickItem(el, 'Samantha');
+
+      expect(el.scope().$select.ngModel.$invalid).toEqual(false);
+      expect(el.scope().$select.ngModel.$error.required).toEqual(undefined);
+
+      el.find('.ui-select-match-item').first().find('.ui-select-match-close').click();
+      $timeout.flush();
+
+      expect(el.scope().$select.ngModel.$invalid).toEqual(true);
+      expect(el.scope().$select.ngModel.$error.required).toEqual(true);
     });
 
     it('should properly identify as empty if required', function () {
