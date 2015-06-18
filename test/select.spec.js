@@ -1886,6 +1886,25 @@ describe('ui-select tests', function() {
 
       expect($(el).scope().$select.selected.length).toBe(5);
     });
+
+    it('should be marked invalid when required and empty', function() {
+      scope.selection.selectedMultiple = [];
+      var el = createUiSelectMultiple({required: true});
+
+      expect(el.scope().$select.ngModel.$invalid).toEqual(true);
+      expect(el.scope().$select.ngModel.$error.required).toEqual(true);
+
+      clickItem(el, 'Samantha');
+
+      expect(el.scope().$select.ngModel.$invalid).toEqual(false);
+      expect(el.scope().$select.ngModel.$error.required).toEqual(undefined);
+
+      el.find('.ui-select-match-item').first().find('.ui-select-match-close').click();
+      $timeout.flush();
+
+      expect(el.scope().$select.ngModel.$invalid).toEqual(true);
+      expect(el.scope().$select.ngModel.$error.required).toEqual(true);
+    });
   });
 
   describe('default configuration via uiSelectConfig', function() {
