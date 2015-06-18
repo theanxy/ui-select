@@ -929,6 +929,25 @@ describe('ui-select tests', function() {
     expect(scope.selection.selected).toBe('Samantha');
   });
 
+  it('should highlight matched value correctly when it is a number', function() {
+    var el = compileTemplate(
+      '<ui-select ng-model="selection.selected"> \
+        <ui-select-match placeholder="Pick one...">{{$select.selected.age}}</ui-select-match> \
+        <ui-select-choices repeat="person.age as person in people | filter: $select.search"> \
+          <div ng-bind-html="person.age | highlight: $select.search"></div> \
+        </ui-select-choices> \
+      </ui-select>'
+    );
+    openDropdown(el);
+    setSearchText(el, '43');
+
+    var choices = $(el).find('.ui-select-choices-row');
+    expect(choices.length).toEqual(1);
+
+    clickItem(el, '43');
+    expect(scope.selection.selected).toBe(43);
+  });
+
   it('should invoke select callback on select', function () {
 
     scope.onSelectFn = function ($item, $model, $label) {
