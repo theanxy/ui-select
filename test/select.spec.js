@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ui-select tests', function() {
-  var scope, $rootScope, $compile, $timeout, $injector, uisRepeatParser;
+  var scope, $rootScope, $compile, $timeout, $injector, $q, uisRepeatParser;
 
   var Key = {
     Enter: 13,
@@ -78,13 +78,15 @@ describe('ui-select tests', function() {
     });
   });
 
-  beforeEach(inject(function(_$rootScope_, _$compile_, _$timeout_, _$injector_, _uisRepeatParser_) {
+  beforeEach(inject(function(_$rootScope_, _$compile_, _$timeout_, _$injector_, _$q_, _uisRepeatParser_) {
     $rootScope = _$rootScope_;
     scope = $rootScope.$new();
     $compile = _$compile_;
     $timeout = _$timeout_;
     $injector = _$injector_;
+    $q = _$q_;
     uisRepeatParser = _uisRepeatParser_;
+
     scope.selection = {};
 
     scope.getGroupLabel = function(person) {
@@ -1637,8 +1639,83 @@ describe('ui-select tests', function() {
         expect($(el).find('.ui-select-search')).toHaveClass('ng-hide');
       });
 
+  describe('spinner', function() {
+    var spinner, el, deferred;
+
+    function setupSelectComponent(theme, spinnerEnabled, spinnerClass) {
+      spinnerClass = spinnerClass ? 'spinner-class="' + spinnerClass + '"' : '';
+
+      el = compileTemplate(
+        '<ui-select ng-model="selection.selected" \
+            theme="' + theme + '" \
+            search-enabled="true" \
+            spinner-enabled="' + spinnerEnabled + '" \
+            ' + spinnerClass + '> \
+          <ui-select-match></ui-select-match> \
+          <ui-select-choices repeat="person in people | filter: $select.search" \
+            refresh="fetchFromServer($select.search)" refresh-delay="0"> \
+            <div ng-bind-html="person.name | highlight: $select.search"></div> \
+            <div ng-if="person.name==\'Wladimir\'"> \
+              <span class="only-once">I should appear only once</span>\
+            </div> \
+          </ui-select-choices> \
+        </ui-select>'
+      );
+    }
+
+    function fetchFromServer(){
+      deferred = $q.defer();
+      return deferred.promise;
+    }
+
+    it('should not display spinner when disabled', function() {
+      scope.fetchFromServer = fetchFromServer;
+      setupSelectComponent('bootstrap', 'false', '');
+
+      openDropdown(el);
+
+      spinner = el.find('.ui-select-refreshing');
+      expect(spinner.length).toBe(1);
+      expect(spinner.hasClass('ng-hide')).toBe(true);
+
+      setSearchText(el, 'a');
+      expect(spinner.hasClass('ng-hide')).toBe(true);
+
+      deferred.resolve();
+      scope.$digest();
+      expect(spinner.hasClass('ng-hide')).toBe(true);
     });
 
+    it('should display spinner when enabled', function() {
+      scope.fetchFromServer = fetchFromServer;
+      setupSelectComponent('bootstrap', 'true', '');
+
+      openDropdown(el);
+
+      spinner = el.find('.ui-select-refreshing');
+      expect(spinner.length).toBe(1);
+      expect(spinner.hasClass('ng-hide')).toBe(true);
+
+      setSearchText(el, 'a');
+      expect(spinner.hasClass('ng-hide')).toBe(false);
+
+      deferred.resolve();
+      scope.$digest();
+      expect(spinner.hasClass('ng-hide')).toBe(true);
+    });
+
+    it('should add spinner css classes when defined', function() {
+      scope.fetchFromServer = fetchFromServer;
+      setupSelectComponent('bootstrap', 'true', 'fa fa-spinner fa-spin');
+
+      openDropdown(el);
+      setSearchText(el, 'a');
+
+      spinner = el.find('.ui-select-refreshing');
+      expect(spinner.attr('class')).toEqual('ui-select-refreshing fa fa-spinner fa-spin');
+
+      deferred.resolve();
+    });
   });
 
 

@@ -43,6 +43,9 @@ uis.directive('uiSelect',
         $select.baseTitle = attrs.title || 'Select box';
         $select.focusserTitle = $select.baseTitle + ' focus';
         $select.focusserId = 'focusser-' + $select.generatedId;
+        $select.spinnerEnabled = angular.isDefined(tAttrs.spinnerEnabled) ? scope.$eval(tAttrs.spinnerEnabled) : uiSelectConfig.spinnerEnabled;
+        $select.spinnerClass = angular.isDefined(tAttrs.spinnerClass) ? tAttrs.spinnerClass : uiSelectConfig.spinnerClass;
+        $select.noResults = tAttrs.noResults || uiSelectConfig.noResults;
 
         $select.closeOnSelect = function() {
           if (angular.isDefined(attrs.closeOnSelect)) {

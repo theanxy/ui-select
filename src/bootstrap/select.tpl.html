@@ -1,5 +1,6 @@
 <div class="ui-select-container ui-select-bootstrap dropdown" ng-class="{open: $select.open}">
   <div class="ui-select-match"></div>
+  <i ng-show="$select.open && $select.spinnerEnabled && $select.refreshing" class="ui-select-refreshing {{$select.spinnerClass}}"></i>
   <input type="text" autocomplete="off" tabindex="-1"
          aria-expanded="true"
          aria-label="{{ $select.baseTitle }}"
