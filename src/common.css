@@ -192,6 +192,10 @@ body > .ui-select-bootstrap.open {
   position: relative;
 }
 
+.ui-select-multiple .ui-select-match > span:last-child {
+    margin-right: 5px;
+}
+
 .ui-select-multiple .ui-select-match-item.dropping-before:before {
   content: "";
   position: absolute;

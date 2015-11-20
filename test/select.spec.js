@@ -1638,6 +1638,8 @@ describe('ui-select tests', function() {
         clickMatch(el);
         expect($(el).find('.ui-select-search')).toHaveClass('ng-hide');
       });
+    });
+  });
 
   describe('spinner', function() {
     var spinner, el, deferred;
