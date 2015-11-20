@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.13.2 - 2015-11-19T13:41:45.020Z
+ * Version: 0.13.2 - 2015-11-20T14:37:36.916Z
  * License: MIT
  */
 
@@ -198,6 +198,10 @@ body > .ui-select-bootstrap.open {
 
 .ui-select-multiple .ui-select-match-item {
   position: relative;
+}
+
+.ui-select-multiple .ui-select-match > span:last-child {
+    margin-right: 5px;
 }
 
 .ui-select-multiple .ui-select-match-item.dropping-before:before {
