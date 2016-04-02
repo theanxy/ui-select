@@ -1,6 +1,6 @@
 # AngularJS ui-select [![Build Status](https://travis-ci.org/angular-ui/ui-select.svg?branch=master)](https://travis-ci.org/angular-ui/ui-select) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/angular-ui/ui-select?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-AngularJS-native version of [Select2](http://ivaynberg.github.io/select2/) and [Selectize](http://brianreavis.github.io/selectize.js/).
+AngularJS-native version of [Select2](http://ivaynberg.github.io/select2/) and [Selectize](http://brianreavis.github.io/selectize.js/). [http://angular-ui.github.io/ui-select/](http://angular-ui.github.io/ui-select/)
 
 [Getting Started](https://github.com/angular-ui/ui-select/wiki/Getting-Started) 
 
@@ -14,10 +14,10 @@ AngularJS-native version of [Select2](http://ivaynberg.github.io/select2/) and [
 
 ## Features
 
-- Search, Select, and Multi-select
+- Search, Select, Multi-select and Tagging
 - Multiple Themes: Bootstrap, Select2 and Selectize
 - Keyboard support
-- jQuery not required (except for old browsers)
+- No jQuery required (except for old browsers)
 - Small code base: 4.57KB min/gzipped vs 20KB for select2
 
 For the roadmap, check [issue #3](https://github.com/angular-ui/ui-select/issues/3) and the [Wiki page](https://github.com/angular-ui/ui-select/wiki/Roadmap).
