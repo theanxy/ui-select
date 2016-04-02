@@ -18,7 +18,7 @@ git rm -rf .
 git clean -fxd
 
 # get new content
-cp ../docs/* . -R
+cp ../docs-built/* . -R
 
 git add .
 
