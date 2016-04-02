@@ -100,7 +100,7 @@ angular.module('plunkr', [])
     var filePromises = [];
 
     angular.forEach(files, function (folder, filename) {
-      filePromises.push($http.get(folder + '/' + filename, { transformResponse: [] })
+      filePromises.push($http.get(folder + '/' + filename, { transformResponse: [], cache: true })
         .then(function (response) {
 
           var content = response.data;
