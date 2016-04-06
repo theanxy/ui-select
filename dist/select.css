@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.16.0 - 2016-03-23T20:51:56.678Z
+ * Version: 0.16.1 - 2016-04-06T18:29:54.862Z
  * License: MIT
  */
 
@@ -161,7 +161,7 @@ body > .select2-container.open {
 }
 
 /* See Scrollable Menu with Bootstrap 3 http://stackoverflow.com/questions/19227496 */
-.ui-select-bootstrap > .ui-select-choices {
+.ui-select-bootstrap > .ui-select-choices ,.ui-select-bootstrap > .ui-select-no-choice {
   width: 100%;
   height: auto;
   max-height: 200px;
@@ -198,6 +198,10 @@ body > .ui-select-bootstrap.open {
 
 .ui-select-multiple .ui-select-match-item {
   position: relative;
+}
+
+.ui-select-multiple .ui-select-match > span:last-child {
+    margin-right: 5px;
 }
 
 .ui-select-multiple .ui-select-match-item.dropping-before:before {
@@ -264,4 +268,43 @@ body > .ui-select-bootstrap.open {
 /* Handle up direction Bootstrap */
 .ui-select-container[theme="bootstrap"].direction-up .ui-select-dropdown {
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.25);
+}
+
+
+/* Spinner */
+.ui-select-refreshing {
+  margin-top: -0.5em;
+  position: absolute;
+  right: 0.5em;
+  top: 50%;
+}
+
+@-webkit-keyframes ui-select-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes ui-select-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+
+.ui-select-spin {
+  -webkit-animation: ui-select-spin 2s infinite linear;
+  animation: ui-select-spin 2s infinite linear;
+}
+
+.ui-select-refreshing.ng-animate {
+  -webkit-animation: none 0s;
 }
