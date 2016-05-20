@@ -778,6 +778,30 @@ describe('ui-select tests', function() {
 
   });
 
+  it('should correctly render initial state (with object as source) differentiating between falsy values', function() {
+    scope.items = [{
+      label: '-- None Selected --',
+      value: ''
+    }, {
+      label: 'Yes',
+      value: true
+    }, {
+      label: 'No',
+      value: false
+    }];
+
+    var el = compileTemplate(
+      '<ui-select ng-model="selection.selected"> \
+        <ui-select-match>{{ $select.selected.label }}</ui-select-match> \
+        <ui-select-choices repeat="item.value as item in items track by item.value">{{ item.label }}</ui-select-choices> \
+      </ui-select>'
+    );
+
+    scope.selection.selected = '';
+    scope.$digest();
+    expect(getMatchLabel(el)).toEqual('-- None Selected --');
+  });
+
   describe('disabled options', function() {
     function createUiSelect(attrs) {
       var attrsDisabled = '';
@@ -2557,6 +2581,22 @@ describe('ui-select tests', function() {
       triggerPaste(el.find('input'), "tag1\ttag2\ttag3");
 
       expect($(el).scope().$select.selected.length).toBe(3);
+    });
+
+    it('should split pastes on tagging token that is not the first token', function() {
+      var el = createUiSelectMultiple({tagging: true, taggingTokens: ",|ENTER|TAB"});
+      clickMatch(el);
+      triggerPaste(el.find('input'), "tag1\ntag2\ntag3\ntag4");
+
+      expect($(el).scope().$select.selected).toEqual(['tag1', 'tag2', 'tag3', 'tag4']);
+    });
+
+    it('should split pastes only on first tagging token found in paste string', function() {
+      var el = createUiSelectMultiple({tagging: true, taggingTokens: ",|ENTER|TAB"});
+      clickMatch(el);
+      triggerPaste(el.find('input'), "tag1\ntag2\ntag3\ttag4");
+
+      expect($(el).scope().$select.selected).toEqual(['tag1', 'tag2', 'tag3\ttag4']);
     });
 
     it('should add an id to the search input field', function () {

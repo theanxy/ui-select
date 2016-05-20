@@ -118,7 +118,7 @@ gulp.task('recommendedBump', function(done) {
 
   conventionalRecommendedBump({preset: 'angular'}, function(err, importance) {
     // Get all the files to bump version in
-    gulp.src(['./package.json', './bower.json'])
+    gulp.src(['./package.json'])
       .pipe($.bump({type: importance}))
       .pipe(gulp.dest('./'));
 
@@ -170,9 +170,9 @@ gulp.task('docs:assets', function () {
 
 gulp.task('docs:examples', function () {
   return gulp.src(['docs/examples/*.html'])
-    .pipe($.filenames('exampleFiles'))
     .pipe($.header(fs.readFileSync('docs/partials/_header.html')))
     .pipe($.footer(fs.readFileSync('docs/partials/_footer.html')))
+    .pipe($.filenames('exampleFiles'))
     .pipe(gulp.dest('./docs-built/'));
 });
 
